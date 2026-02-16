@@ -3,8 +3,14 @@ const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 const message = document.getElementById("message");
 
-let tasks = loadTasks(); // [{ text: "...", done: false }, ...]
+const filterAllBtn = document.getElementById("filterAll");
+const filterActiveBtn = document.getElementById("filterActive");
+const filterDoneBtn = document.getElementById("filterDone");
 
+let tasks = loadTasks();
+let filter = "all"; // "all" | "active" | "done"
+
+setActiveFilterButton();
 render();
 
 function loadTasks() {
@@ -21,10 +27,30 @@ function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+function setActiveFilterButton() {
+  filterAllBtn.classList.remove("activeFilter");
+  filterActiveBtn.classList.remove("activeFilter");
+  filterDoneBtn.classList.remove("activeFilter");
+
+  if (filter === "all") filterAllBtn.classList.add("activeFilter");
+  if (filter === "active") filterActiveBtn.classList.add("activeFilter");
+  if (filter === "done") filterDoneBtn.classList.add("activeFilter");
+}
+
+function getVisibleTasks() {
+  if (filter === "active") return tasks.filter((t) => !t.done);
+  if (filter === "done") return tasks.filter((t) => t.done);
+  return tasks;
+}
+
 function render() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
+  const visible = getVisibleTasks();
+
+  visible.forEach((task) => {
+    const index = tasks.indexOf(task);
+
     const li = document.createElement("li");
     if (task.done) li.classList.add("done");
 
@@ -52,6 +78,8 @@ function render() {
     li.appendChild(del);
     taskList.appendChild(li);
   });
+
+  message.textContent = `Showing: ${filter} (${visible.length})`;
 }
 
 function addTask() {
@@ -67,11 +95,29 @@ function addTask() {
   render();
 
   input.value = "";
-  message.textContent = "Added ✅";
 }
 
 addBtn.addEventListener("click", addTask);
 
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
+});
+
+// Filters
+filterAllBtn.addEventListener("click", () => {
+  filter = "all";
+  setActiveFilterButton();
+  render();
+});
+
+filterActiveBtn.addEventListener("click", () => {
+  filter = "active";
+  setActiveFilterButton();
+  render();
+});
+
+filterDoneBtn.addEventListener("click", () => {
+  filter = "done";
+  setActiveFilterButton();
+  render();
 });

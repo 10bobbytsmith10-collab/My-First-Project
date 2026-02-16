@@ -1,4 +1,4 @@
-# My Task List
+# My First Project
 
 A simple task list app built with HTML, CSS, and JavaScript.
 
@@ -9,4 +9,4 @@ A simple task list app built with HTML, CSS, and JavaScript.
 - Saves tasks using localStorage (persists after refresh)
 
 ## Live Demo
-(Paste your GitHub Pages link here)
+file:///Users/bobby1040/Documents/First%20Project/index.html

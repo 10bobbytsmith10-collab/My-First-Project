@@ -6,6 +6,7 @@ A simple task list app built with HTML, CSS, and JavaScript.
 - Add tasks
 - Mark tasks complete
 - Delete tasks
+- Filters: All / Active / Done
 - Saves tasks using localStorage (persists after refresh)
 
 ## Live Demo
